@@ -63,7 +63,7 @@ include, Y_DIR+"graph3d.i";
 include, Y_DIR+"pale.i";
 
 include, Y_DIR+"tama.i";
-include, Y_DIR+"sample.i";
+
 
 /* This should be the final line in your custom.i file-- it implements
    the default command line processing (see help for process_argv).  */
