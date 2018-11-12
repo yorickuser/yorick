@@ -1,4 +1,6 @@
 ##################
+-------
+
 Modification in this fork
 -------
 
@@ -6,12 +8,14 @@ Modification in this fork
 * Currently, documents for "help, function_name" may be incomplete and source codes are not tidy, but all functions listed below have examples, shown by "help, function_name" at yorick prompt.
 * Functions for plotting 3D-tubes, 3D-cones and for smooth shading will be added (not yet).
 
-<Usage>
+Usage
+-------
 
 * Put all files and directories in "myYorick" in "Yorick" directory in your home directory. (If "Yorick" directory does not exist, just put "myYorick" at your home directory and rename it to "Yorick".)
 * Type "help,function_name" at yorick prompt show its example.
 
-<Functions in graph2d.i>
+Functions in graph2d.i
+-------
 
 * idl: idling function for event driven programing controlled by mouse click.
 
@@ -45,7 +49,8 @@ Modification in this fork
 * I:short expression of "include" function.
 
 
-<Functions in graph3d.i>
+Functions in graph3d.i
+-------
 
 * ro: rotates 3D-plottings with mouse.
 
@@ -66,7 +71,7 @@ Modification in this fork
 
 
 ##################
-
+-------
 
 Welcome
 -------
