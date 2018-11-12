@@ -35,8 +35,8 @@ func spal (name,name1){
 
    <Example>
    
-   read_poly,nv0,xyzv0,"poly/kuti.poly";
-   read_poly,nv1,xyzv1,"poly/tetra.poly";
+   read_poly,nv0,xyzv0,"~/Yorick/poly/kuti.poly";
+   read_poly,nv1,xyzv1,"~/Yorick/poly/tetra.poly";
    
    xyzv0+=[-1,0,0];
    xyzv1+=[1,0,0];
@@ -68,8 +68,8 @@ func make_mypal(name)
 
    <Example>
    
-   read_poly,nv0,xyzv0,"poly/kuti.poly";
-   read_poly,nv1,xyzv1,"poly/tetra.poly";
+   read_poly,nv0,xyzv0,"~/Yorick/poly/kuti.poly";
+   read_poly,nv1,xyzv1,"~/Yorick/poly/tetra.poly";
    
    xyzv0+=[-1,0,0];
    xyzv1+=[1,0,0];
@@ -606,7 +606,7 @@ func lim32xz(void)
 
    <Example>
    win2;
-   read_poly(nv,xyzv,"poly/kuti.poly");
+   read_poly(nv,xyzv,"~/Yorick/poly/kuti.poly");
    pl3surf,nv,xyzv*0.3;
    cage3,1;
    draw3,1;
@@ -628,7 +628,7 @@ func lim32xy(void)
 
    <Example>
    win2;
-   read_poly(nv,xyzv,"poly/kuti.poly");
+   read_poly(nv,xyzv,"~/Yorick/poly/kuti.poly");
    pl3surf,nv,xyzv*0.3;
    cage3,1;
    draw3,1;
@@ -650,7 +650,7 @@ func lim32yz(void)
 
    <Example>
    win2;
-   read_poly(nv,xyzv,"poly/kuti.poly");
+   read_poly(nv,xyzv,"~/Yorick/poly/kuti.poly");
    pl3surf,nv,xyzv*0.3;
    cage3,1;
    draw3,1;
@@ -673,7 +673,7 @@ func write_poly(nv,vv,file)
 
    <Example>
 
-   read_poly,nv,xyzv,"poly/tetra.poly";
+   read_poly,nv,xyzv,"p~/Yorick/oly/tetra.poly";
    win2,n=0;win3;
    pl3surf,nv,xyzv;
    lim3,xyzv;
@@ -708,7 +708,7 @@ func read_poly(&nvv,&vvv,file)
 
    <Example>
 
-   read_poly,nv,xyzv,"poly/tetra.poly";
+   read_poly,nv,xyzv,"~/Yorick/poly/tetra.poly";
    win2,n=0;win3;
    pl3surf,nv,xyzv;
    lim3,xyzv;

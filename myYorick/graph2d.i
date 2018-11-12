@@ -390,6 +390,7 @@ demo_idl2;
             "fun2";
             if(!is_void(fun2)){              
               fun2;
+              draw3,1;
             }
           }else{
             if(flag_ro_axis==0){flag_ro_axis=1;write,"Rotation along axis: On";}
@@ -413,7 +414,7 @@ demo_idl2;
                 yrange = abs(li(4) - li(3))*amp*0.5;
                 limits, x(1)-amp*(x(1)-li(1)),x(2)-amp*(x(2)-li(2)),x(1)-amp*(x(1)-li(3)),x(2)-amp*(x(2)-li(4));
             }
-              if(rot==0){
+              if((rot==0)*(x(11)==0)){
                 "fun1";
                 if(!is_void(fun1))fun1;
               }else{
