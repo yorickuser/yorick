@@ -255,7 +255,7 @@ if(is_void(nframe))nframe=50000;
 if(is_void(sav))sav=0; 
  if(is_void(rotation))rotation=0;
  if(is_void(speed))speed=0.1;
- flag_ro_axis=1;
+ flag_ro_axis=0;
  ro_amp=0.1;
 do {
   x=array(0,11);
