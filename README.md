@@ -1,3 +1,73 @@
+##################
+Modification in this fork
+-------
+
+* Directory "myYorick" have been added. "myYorick" contains some additional functions for 2D- and 3D-plot and for event-driven control by mouse.
+* Currently, documents for "help, function_name" may be incomplete and source codes are not tidy, but all functions listed below have examples, shown by "help, function_name" at yorick prompt.
+* Functions for plotting 3D-tubes, 3D-cones and for smooth shading will be added (not yet).
+
+<Usage>
+
+* Put all files and directories in "myYorick" in "Yorick" directory in your home directory. (If "Yorick" directory does not exist, just put "myYorick" at your home directory and rename it to "Yorick".)
+* Type "help,function_name" at yorick prompt show its example.
+
+<Functions in graph2d.i>
+
+* idl: idling function for event driven programing controlled by mouse click.
+
+* win2: changes window properties such as size, shape and ticks.
+
+* plgl:"plg" function with graph-legends on window.
+* plgf:"plg" function filling under the line with specified color.
+* plh: plots histogram from frequency data (with graph-legends as line segments).
+* plhf: plots histogram from frequency data (with graph-legends as filled boxes).
+* pler: plots error bars.
+
+* fp: plots line of specified function y=f(x).
+* fp2: plots a surface of 2D function f(x,y) with plwf.
+* fpfc: plots filled contour of 2D function z=f(x,y) with plfc.
+* cbfc: plots color bar with tickes for plfc function.
+* make_hist: make frequency data from raw data, and plot histogram.
+* hist2d: aggregates 2D dataset.
+* make_xy_plf: make x-y coordinates for plf.
+* xyt: plots titles for x- and y-axes with a slightly finer adjustment than xytitles.
+
+* pal: sets color palette.
+* cb: draws a color bar to the right of the plot by "plf" function.
+* fmal: resets plottings and graph-legend.
+* outpng: saves plottings in png format.
+* hcpng: saves plottings in png and/or eps format.
+
+* scalexy: scales plotting in horizontal and vertical directions separately.
+* scalex: scales plotting in horizontal direction.
+* scaley: scales plotting in vertical direction.
+* scale: scales plotting in horizontal and vertical directions by the same ratio.
+* I:short expression of "include" function.
+
+
+<Functions in graph3d.i>
+
+* ro: rotates 3D-plottings with mouse.
+
+* win3: initializes the window to 3D-mode
+* changech: changes properties of cage3.
+* read_poly: reads polygon data for pl3surf and pl3tree to a text file.
+* write_poly: writes polygon data for pl3surf and pl3tree to a text file.
+
+* lim3: a short-name version of limit3.
+* lim32xz: adjusts the rotation and scale of plottings so that the scales of x- and z-axes in "win2" coincide with those of x- and z-axes on the 3D-cage.
+* lim32xy: adjusts the rotation and scale of plottings so that the scales of x- and y-axes in "win2" coincide with those of x- and y-axes on the 3D-cage.
+* lim32yz: adjusts the rotation and scale of plottings so that the scales of y- and z-axes in "win2" coincide with those of y- and z-axes on the 3D-cage.
+
+* spal: prepares two different palettes (mainly for pl3tree).
+* make_mypal : gets palette data.
+* make_xyz: transform data for plwf into data for pl3surf and pl3tree.
+* get_light:calculates brightness of each polygon consisting surface in the same manner with pl3surf.
+
+
+##################
+
+
 Welcome
 -------
 
