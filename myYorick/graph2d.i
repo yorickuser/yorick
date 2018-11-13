@@ -476,9 +476,8 @@ rd,50000;
         //    ro_axis; 
               if(x(11)==4){
                 amp = exp(2.0*(x(2)-x(4))/(li(4)-li(3)));
-                xrange = abs(li(2)-li(1))*amp*0.5;
-                yrange = abs(li(4) - li(3))*amp*0.5;
-                limits, x(1)-amp*(x(1)-li(1)),x(2)-amp*(x(2)-li(2)),x(1)-amp*(x(1)-li(3)),x(2)-amp*(x(2)-li(4));
+               
+                limits, x(1)-amp*(x(1)-li(1)),x(1)+amp*(li(2)-x(1)),x(2)-amp*(x(2)-li(3)),x(2)+amp*(li(4)-x(2));
             }
               if((rot==0)*(x(11)==0)){
                 "fun1";
