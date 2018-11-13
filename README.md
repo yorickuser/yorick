@@ -4,14 +4,14 @@
 Modification in this fork
 -------
 
-* Directory "myYorick" have been added. "myYorick" contains some additional functions for 2D- and 3D-plot and for event-driven control by mouse.
+* Directory "myYorick" have been added. "myYorick" contains some additional functions for 2D- and 3D-plot and for event-driven control by mouse (function "idl").
 * Currently, documents for "help, function_name" may be incomplete and source codes are not tidy, but all functions listed below have examples, shown by "help, function_name" at yorick prompt.
 * Functions for plotting 3D-tubes, 3D-cones and for smooth shading will be added (not yet).
 
 Usage
 -------
 
-* Put all files and directories in "myYorick" in "Yorick" directory in your home directory. (If "Yorick" directory does not exist, just put "myYorick" at your home directory and rename it to "Yorick".)
+* If "Yorick" directory does not exist under your home directory, just put "myYorick" at your home directory and rename it to "Yorick". If exist, merge the two "custom.i" files in "myYorick" and in "Yorick", and then put all other files and directories in "myYorick" into "Yorick".
 * Type "help,function_name" at yorick prompt show its example.
 
 Functions in graph2d.i

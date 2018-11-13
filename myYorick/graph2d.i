@@ -239,6 +239,11 @@ func pal (name,rev=)
   return;
 }
 
+func idl_fun2(void){
+ command=rdline(,1,prompt="Enter command: ")
+ exec,command;
+}
+
 
 func idl(dp,count,rot=,flag_stop=,fun1=,fun2=)
 /* DOCUMENT if(idl(dp))break;
@@ -263,17 +268,19 @@ Left button (when ROT is 1): Drugging rotates ploted object.
 Left button (when ROT is 0): call function "fun1" if exists.
 
 Right button with Ctrl-key (when ROT is 1): switch whether rotation is along either axis or not.
-Right button with Ctrl-key (when ROT is 1): call function "fun2" if exists.
+Right button with Ctrl-key (when ROT is 1): call function "fun2" if specified as an argumet of idl. If not specified, a default function "idl_fun2" is called, and you can enter any comannd, e.g., "outpng","scale,0.8", "limits", "extern n; n=5;". If a variable is decleared globally, its value can easily be changed by "extern variable_name; variable_name = new_value;".
 
 SEE ALSO: mouse, pause,ro
 
 <Example 0>
-animate,1;
+
+line_color=red;
 x=span(0,12,100);
+win2;
+animate,1;
 for(i=0;i<=10000;i++){
 fma;
-plg,sin(i*0.05+x)+cos(-i*0.08+1.5*x+1),x;
-redraw;
+plg,sin(i*0.05+x)+cos(-i*0.08+1.5*x+1),x,color=line_color;
 if(idl(20))break;
 }
 animate,0;
@@ -281,17 +288,13 @@ animate,0;
 <Example 1>
 
 nlevs=10;
-func function1(void){
-  extern nlevs;
-  n=read(prompt="Enter number of contours: ",nlevs);
-  write,"nlevs:",nlevs;
-}
 
-func function2(void){
-  palname="";
-  n=read(prompt="Enter palette name: ",palname);
-  palname;
-  pal,palname;
+//function1 is called by [left button]: changes palette
+func function1(void){
+  cpal=["earth","heat","sunrise","bb"];
+  id=1;
+  n=read(prompt="Choose palette: 1: earth, 2: heat, 3: sunrise, 4: bb >",id);
+  pal,cpal(id);
 }
 
 func demo_idl1(dp){
@@ -311,7 +314,7 @@ y= transpose(x);
     plc,z,y,x,color=red,levs=levs;
     cbfc,[-2,2],levs=levs,ticks=1,label=1;
     redraw;
-    if(idl(dp,fun1=function1,fun2=function2))break;
+    if(idl(dp,fun1=function1))break;
   }
   animate,0;
 }
@@ -354,12 +357,70 @@ func demo_idl2(void){
 win2;
 win3;
 demo_idl2;
-   
+
+
+<Example 3>
+
+size = 120;
+dt =0.2;
+view_interval=100;
+count_interval=1000;
+a = 0.023;
+b = 0.055;
+
+gridx=span(0,1,size)(,-:1:size);
+gridy=transpose(gridx);
+dif_gridx=span(0.3,2.0,size)(,-:1:size);
+dif_gridy=transpose(dif_gridx);
+dif_rate_x = (8.0e-2)*dif_gridx;
+dif_rate_y = (4.6e-2)*dif_gridy;
+
+x=array(1.0,size,size);
+y=array(0.001,size,size);
+y(size/2,size/3) = 0.5;
+diffuse_mask=grow(1,indgen(size),size);
+
+func rd (T,dp=){
+  if(is_void(T))T=10000;
+  if(is_void(dp))dp=1;
+  fma;
+  plfc,y,gridy,gridx,levs=spanl(0.05,0.6,20);
+  xyt,"Diffusion rate for x", "Diffusion rate for y";
+  limits;
+  
+  animate,1;
+  for(t=1; t<=T;t++){
+    diffuse_x=(x(,diffuse_mask)(,dif)(,dif)+x(diffuse_mask,)(dif,)(dif,));
+    diffuse_y=(y(,diffuse_mask)(,dif)(,dif)+y(diffuse_mask,)(dif,)(dif,));
+    x += dt*(-1.0*x*y*y + a*(1.0-x) +dif_rate_x*diffuse_x);
+    y += dt*(x*y*y - (a+b)*y+dif_rate_y*diffuse_y);
+    
+    if(t%count_interval==0)t; 
+    if(t%view_interval==0){
+      fma;
+      plfc,y,gridy,gridx,levs=spanl(0.05,0.6,20);
+      xyt,"Diffusion rate for x", "Diffusion rate for y";
+  
+  
+      if(idl(5))break;
+    }
+    
+  }
+  animate,0;
+}
+
+win2;
+rd,50000;
+
 */
 {
+  extern idl_fun2;
+  redraw;
+  
   flag_ro_axis=0;
   if(is_void(dp))dp=1;
   if(is_void(rot))rot=0;
+  if(is_void(fun2))fun2=idl_fun2;
   change_lim=0;
   if(is_void(flag_stop))flag_stop=0;
   oldlim=limits();  
@@ -393,9 +454,14 @@ demo_idl2;
               draw3,1;
             }
           }else{
+            xx=mouse(1, 2,"[ctrl+right]: enter command\n[right]: switch rotation mode \n choice: ");
+            if((xx(10)==3)*(xx(11)==4)){
+              fun2;
+            }
+            if((xx(10)==3)*(xx(11)==0)){
             if(flag_ro_axis==0){flag_ro_axis=1;write,"Rotation along axis: On";}
             else{flag_ro_axis=0;write,"Rotation along axis: Off";}
-          
+            }
           }
         }
           
@@ -1025,13 +1091,23 @@ func outpng (ofile,view=)
  */
 {
   require,"png.i";
-  if(is_void(ofile))ofile=Y_DIR+"buf/png_buf";
+
   if(is_void(view))view=1;
- 
-  rgb=rgb_read();
-  png_write,ofile+".png",rgb;
+
+  if(is_void(ofile)){
+    cwd=get_cwd();
+    cd,Y_DIR+"buf";
+    png2,"png_buf"+".png";
+    cd,cwd;
+    ofile=Y_DIR+"buf/png_buf";
+    if(view==1)system,viewer_bin+" "+ofile+".png &";    
+    
+  }else{
+    png2,ofile+".png";
+    if(view==1)system,viewer_bin+" "+ofile+".png &";    
+  }
   write,"png output:",ofile+".png";
-  if(view==1)system,viewer_bin+" "+ofile+".png &";
+  
 }
 
 func hcpng (name,dens,geom,epsi=,outps=,view=,bgcolor=,alpha=)
