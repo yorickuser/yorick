@@ -229,17 +229,18 @@ DEFINITION ro (nframe=,sav=,ster=,rotation=,speed=)
 
 rotates 3D-plottings with mouse.
 
-   rotation (left button),
-   animation of rotation (middle bottun) by mouse.
-
-   left button:rotation
-   right+ctrl:end function "ro"
-   
-   right button:rotation animation
-   right+shift:rotation animation about axis
-   <During the animation>
-   right button : pause and start
-   right+ctrl during pause : end animation
+ Rotate: Left drag
+ Zoom/Pan: Ctrl + Left drag (up/down)
+ Move: Shift + Left drag
+ Switch rotation mode: Ctrl + Right
+ End: Shift + Right
+ Rotation animation: Right drag
+ 
+ <During rotation animation>
+ Pause/Restart: Right
+ End animation: Shift + Right
+ Rotation mode: Ended
+ 
    KEYWORDS: 
    SEE ALSO: mouse
 
@@ -254,7 +255,20 @@ scale,0.8;
 ro;
 
 */
-  write,"Rotation mode: Started"
+  write,"Rotation mode: Started";
+  write,"";
+  write,"Rotate: Left drag";
+  write,"Zoom/Pan: Ctrl + Left drag (up/down)";
+  write,"Move: Shift + Left drag";
+  write,"Switch rotation mode: Ctrl + Right";
+  write,"End: Shift + Right";
+  write,"Rotation animation: Right drag";
+  write,"";
+  write,"<During rotation animation>";
+  write,"Pause/Restart: Right";
+  write,"End animation: Shift + Right";
+  write,"";
+  
 if(is_void(nframe))nframe=50000;
 if(is_void(sav))sav=0; 
  if(is_void(rotation))rotation=0;
