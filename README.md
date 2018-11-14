@@ -6,7 +6,7 @@ Modification in this fork
 
 * Directory "myYorick" have been added. "myYorick" contains some additional functions for 2D- and 3D-plot and for event-driven control by mouse (function "idl").
 * Currently, documents for "help, function_name" may be incomplete and source codes are not tidy, but all functions listed below have examples, shown by "help, function_name" at yorick prompt.
-* Functions for plotting 3D-tubes, 3D-cones and for smooth shading will be added (not yet).
+* Functions for 3D-cones and for smooth shading will be added (not yet).
 
 Usage
 -------
@@ -14,10 +14,21 @@ Usage
 * If "Yorick" directory does not exist under your home directory, just put "myYorick" at your home directory and rename it to "Yorick". If exist, merge the two "custom.i" files in "myYorick" and in "Yorick", and then put all other files and directories in "myYorick" into "Yorick".
 * Type "help,function_name" at yorick prompt show its example.
 
-Functions in graph2d.i
+Functions in idl.i
 -------
 
 * idl: idling function for event driven programing controlled by mouse click.
+
+Functions in idl_demo0.i, idl_demo1.i, idl_demo2.i, idl_demo3.i
+-------
+
+* idl_demo0: demo for idl
+* idl_demo1: demo for idl
+* idl_demo2: demo for idl
+* idl_demo3: demo for idl
+
+Functions in graph2d.i
+-------
 
 * win2: changes window properties such as size, shape and ticks.
 
@@ -69,6 +80,11 @@ Functions in graph3d.i
 * make_xyz: transform data for plwf into data for pl3surf and pl3tree.
 * get_light:calculates brightness of each polygon consisting surface in the same manner with pl3surf.
 
+
+Functions in tube3.i
+-------
+
+* tube3: 3D-tube plot.
 
 ##################
 -------

@@ -24,7 +24,11 @@ make_mypal : gets palette data.
 make_xyz: transform data for plwf into data for pl3surf and pl3tree.
 get_light:calculates brightness of each polygon consisting surface in the same manner with pl3surf.
 */
-  
+
+require,"plwf.i";
+include,Y_DIR+"pl3d_modified.i",1;
+include,Y_DIR+"slice3_modified.i",1;
+include,Y_DIR+"tama.i",1;
 
 func spal (name,name1){
 /* DOCUMENT spal, name, name1

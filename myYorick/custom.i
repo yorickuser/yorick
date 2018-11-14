@@ -53,16 +53,13 @@ viewer_bin=Y_HOME+"image_magick/IMDisplay.exe";
   convert_bin="convert";
   viewer_bin="display";
  }
-Y_DIR="~/Yorick/";
+Y_DIR="Yorick/";
 
 include, Y_DIR+"graph2d.i";
-include,"plwf.i";
-include,Y_DIR+"pl3d_modified.i";
-include,Y_DIR+"slice3_modified.i";
 include, Y_DIR+"graph3d.i";
-include, Y_DIR+"pale.i";
+include, Y_DIR+"idl.i";
+include, Y_DIR+"tube3.i";
 
-include, Y_DIR+"tama.i";
 
 
 /* This should be the final line in your custom.i file-- it implements
