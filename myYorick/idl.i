@@ -395,10 +395,10 @@ idl_demo3,50000;
     if(push_but==2){write,"End";return 1;}
     if(push_but==3){fun3;}
     if(push_but==4){change_pal;}
-    if(push_but==5){swith_ro_axis;}
+    if(push_but==5){switch_ro_axis;}
     if(push_but==6){if(!is_void(fun1))fun1;}
     if(push_but==7){if(!is_void(fun2))fun2;}
-    limits(oldlim);
+    limits,oldlim;
   }
   if(check1+(push_but==1)){
     flag_stop=(flag_stop+1)%2;
