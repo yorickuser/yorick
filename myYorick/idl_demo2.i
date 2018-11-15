@@ -1,4 +1,5 @@
 func idl_demo2(void){
+ 
   x= span(-3,3,32)(,-:1:32);
   y= transpose(x);
   z= sin(2*sqrt(x^2+y^2))+cos(x+y+0.13);
@@ -26,6 +27,9 @@ func idl_demo2(void){
 }
 
 idl_initial_pause=1;
-win2;
+idl_rotation=2;
+idl_rotation_speed=[0,0,0.003];
+
+win2,offset_w=100;
 win3;
 idl_demo2;

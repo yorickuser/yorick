@@ -23,7 +23,7 @@ y= transpose(x);
     levs=span(-1.5,1.5,nlevs);
     plfc,z,y,x,levs=levs;
     plc,z,y,x,color=red,levs=levs;
-    cbfc,[-2,2],levs=levs,ticks=1,label=1;
+    //    cbfc,[-2,2],levs=levs,ticks=1,label=1;
     redraw;
     if(idl(dp,fun1=function1))break;
   }

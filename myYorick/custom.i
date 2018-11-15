@@ -54,6 +54,7 @@ viewer_bin=Y_HOME+"image_magick/IMDisplay.exe";
   viewer_bin="display";
  }
 Y_DIR="~/Yorick/";
+//Y_DIR="~/git/yorick/myYorick/";
 
 include, Y_DIR+"graph2d.i";
 include, Y_DIR+"graph3d.i";

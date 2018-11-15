@@ -236,13 +236,13 @@ rotates 3D-plottings with mouse.
  End: Shift + Right
  Rotation animation: Right drag
  
- <During rotation animation>
+ <During rotation animation (controlled by idl)>
  Pause/Restart: Right
  End animation: Shift + Right
  Rotation mode: Ended
  
    KEYWORDS: 
-   SEE ALSO: mouse
+   SEE ALSO: mouse,idl
 
 <Example>
 win2;win3;
@@ -268,6 +268,8 @@ ro;
   write,"Pause/Restart: Right";
   write,"End animation: Shift + Right";
   write,"";
+
+  local xx,yy,z;
   
 if(is_void(nframe))nframe=50000;
 if(is_void(sav))sav=0; 
@@ -289,11 +291,19 @@ do {
 if (x(10)==1){
 
   if(x(11)==4){
-        amp = exp(2.0*(x(2)-x(4))/(li(4)-li(3)));
-        xrange = abs(li(2)-li(1))*amp*0.5;
-        yrange = abs(li(4) - li(3))*amp*0.5;
-        
-        limits, x(1)-amp*(x(1)-li(1)),x(2)-amp*(x(2)-li(2)),x(1)-amp*(x(1)-li(3)),x(2)-amp*(x(2)-li(4));
+        ddy=((x(2)-x(4))/(li(4)-li(3)));
+                ddx=((x(1)-x(3))/(li(2)-li(1)));
+                ddr=sqrt(ddx^2+ddy^2);
+            
+                if(ddr<0.0001){
+                  limits;
+                }else{
+                amp = exp(2.0*ddy);
+                amp_pow=2*abs(ddy)/ddr;
+                amp=amp^amp_pow;
+                limits, x(1)-amp*(x(1)-li(1)),x(1)+amp*(li(2)-x(1)),x(2)-amp*(x(2)-li(3)),x(2)+amp*(li(4)-x(2));
+                }
+                            
   }else if(x(11)==0){
 
     if(flag_ro_axis==1){
