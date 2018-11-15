@@ -15,7 +15,7 @@ func idl_demo2(void){
   scale,0.9;
    
   animate,1;
-  for(t=0;t<=1000;t++){
+  for(t=0;t<=3000;t++){
     xyzv(3,)= sin(2*sqrt(xyzv(1,)^2+xyzv(2,)^2)+0.2*t)+cos(xyzv(1,)+xyzv(2,)+0.13*t);
     
     pl3surf,nv,xyzv;

@@ -1,9 +1,13 @@
 //function1 is called by [left button]: changes palette
 func function1(void){
-  cpal=["earth","heat","sunrise","bb"];
-  id=1;
-  n=read(prompt="Choose palette: 1: earth, 2: heat, 3: sunrise, 4: bb >",id);
-  pal,cpal(id);
+  extern nlevs;
+  nlevs=nlevs+1;
+  write,"Contours are increased to:",nlevs;
+}
+func function2(void){
+  extern nlevs;
+  nlevs=nlevs-1;
+  write,"Contours are decreased to:",nlevs;
 }
 
 nlevs=10;
@@ -25,7 +29,7 @@ y= transpose(x);
     plc,z,y,x,color=red,levs=levs;
     //    cbfc,[-2,2],levs=levs,ticks=1,label=1;
     redraw;
-    if(idl(dp,fun1=function1))break;
+    if(idl(dp,fun1=function1,fun2=function2))break;
   }
   animate,0;
 }

@@ -30,7 +30,7 @@ omit_ticks3=0;
 omit_label3=0;
 cage3_front=0;
 
-cage3_backscreen=char(0.8*[250,250,250]);
+cage3_backscreen=char(0.9*[250,250,250]);
 
 white = char(252);
 gray=char(245);
