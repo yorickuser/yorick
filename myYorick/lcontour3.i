@@ -39,7 +39,7 @@ func plfc3(z,y,x,levs=,nlevs=,cmax=,cmin=,mypal=,flat=,cutdown=,shade=,offset=,c
 /* DOCUMENT plfc3,z,y,x
    DEFINITION plfc3(z,y,x,levs=,nlevs=,cmax=,cmin=,mypal=,flat=,cutdown=,shade=,offset=,cutup=,dim=) 
 
-   plots filled contours for function z=f(y,x)
+   plots 3D filled contours for function z=f(y,x)
      
    SEE ALSO: lcontour3
 
@@ -88,7 +88,7 @@ func lcon3(nv,xyzv,levs=,nlevs=,cmax=,cmin=,mypal=)
 /* DOCUMENT plfc3,z,y,x
    DEFINITION plfc3(z,y,x,levs=,nlevs=,cmax=,cmin=,mypal=,flat=,cutdown=,shade=,offset=,cutup=,dim=) 
 
-   plots filled contours for function z=f(y,x)
+   emurates smooth shading
      
    SEE ALSO: lcontour3
 

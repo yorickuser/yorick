@@ -86,6 +86,13 @@ Functions in tube3.i
 
 * tube3: 3D-tube plot.
 
+Functions in lcontour3.i
+-------
+
+* lcontour3: cuts polygon into parts between contours for values defined on the surface of the polygon.
+* lcon3: emurates smooth shading.
+* plfc3: plots 3D filled contours for function z=f(y,x)
+
 ##################
 -------
 

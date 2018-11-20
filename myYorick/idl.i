@@ -32,7 +32,7 @@ idl_old_lim=[0,1,0,1,15];
 idl_old_pos=0;
 idl_count=0;
 idl_count_movie=0;
-idl_movie_eps=1;
+idl_movie_eps=0;
 idl_movie_size=720;
 idl_movie=0;
 //idl_movie_interval=10;
@@ -955,7 +955,28 @@ SEE ALSO: mouse, pause
 }
 
 
-func ro(pause_on){
+func ro(pause_on)
+/* DOCUMENT    ro
+DEFINITION ro (pause_on)
+
+rotates 3D-plottings with mouse, by using function "idl".
+ 
+   KEYWORDS: 
+   SEE ALSO: idl
+
+<Example>
+win2,offset_w=100;
+win3;
+clear3;
+kuti;
+lim3,1.5;
+cage3,1;
+draw3,1;
+scale,0.8;
+ro;
+
+*/
+{
   extern idl_init,idl_init_pause,idl_rotation_speed,idl_rotation,idl_ro_axis;
   idl_init_pause=0;
   if(!is_void(pause_on))idl_init_pause=1;
