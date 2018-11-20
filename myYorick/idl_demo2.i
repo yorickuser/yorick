@@ -21,15 +21,20 @@ func idl_demo2(void){
     pl3surf,nv,xyzv;
     lim3,3,3,6;
     draw3,1;
+    rot=1;
     if(idl(20,t,rot=1))break;
   }
   animate,0;
 }
 
-idl_initial_pause=1;
+
+
 idl_rotation=2;
 idl_rotation_speed=[0,0,0.003];
 
+
 win2,offset_w=100;
 win3;
+idl_init=1;
+idl_init_pause=1;
 idl_demo2;

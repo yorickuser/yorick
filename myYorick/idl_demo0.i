@@ -1,5 +1,8 @@
 line_color=red;
-idl_initial_pause=1;
+
+idl_init_pause=1;
+idl_init=1;
+
 x=span(0,12,100);
 win2;
 animate,1;

@@ -56,7 +56,7 @@ func I(file)
   return;
 }
 
-func win2(width,height,axis=,hold=,n=,x_nMajor=,y_nMajor=,x_nMinor=,y_nMinor=,offset_w=,offset_h=,div_ratio=,div_ratio1=,div_margin=,dpi=)
+func win2(width,height,axis=,hold=,n=,x_nMajor=,y_nMajor=,x_nMinor=,y_nMinor=,offset_w=,offset_h=,margin_w=,margin_h=,div_ratio=,div_ratio1=,div_margin=,dpi=,palname=)
 /* DOCUMENT win2,400,250
    
    DEFINITION win2(width,height,axis=,hold=,n=,x_nMajor=,y_nMajor=,x_nMinor=,y_nMinor=,offset_w=,offset_h=,div_ratio=,div_ratio1=,div_margin=,dpi=)
@@ -96,16 +96,19 @@ extern my_legend_position;
     if(is_void(div_ratio))div_ratio=0.5;
     if(is_void(div_ratio1))div_ratio1=0.5;
     if(is_void(div_margin))div_margin=0.0;
+    if(is_void(margin_w))margin_w=60;
+    if(is_void(margin_h))margin_h=60;
+    
     //    rate=0.00035*1.25;
     rate=0.00035*1.5;
 
     cenx = viewport_center_x;
     //ceny =0.645;
     ceny =viewport_center_y;
-    xs=cenx-(rate*(width-60));
-    xe=cenx+(rate*(width-60));
-    ys=ceny-(rate*(height-60));
-    ye=ceny+(rate*(height-60));
+    xs=cenx-(rate*(width-margin_w));
+    xe=cenx+(rate*(width-margin_w));
+    ys=ceny-(rate*(height-margin_h));
+    ye=ceny+(rate*(height-margin_h));
 
     width=width+offset_w;
     height=height+offset_h;
@@ -165,6 +168,7 @@ extern my_legend_position;
     
     if(is_void(hold)){
         winkill,n;
+        if(axis==-4){window,n,style=Y_DIR+"gs/my_box_no_ticks_white.gs",width=int(width),height=int(height);}
 if(axis==-1){window,n,style=Y_DIR+"gs/my_box_no_ticks.gs",width=int(width),height=int(height);}
 if(axis==-2){window,n,style=Y_DIR+"gs/my_box_no_labels.gs",width=int(width),height=int(height);}
         if(axis==-3){window,n,style=Y_DIR+"gs/my_box_no_ticks_y.gs",width=int(width),height=int(height);}
@@ -202,7 +206,8 @@ if(axis==-2){window,n,style=Y_DIR+"gs/my_box_no_labels.gs",width=int(width),heig
     }
         
     set_style, landscape, systems, legends, clegends        
-    
+      if(is_void(palname))palname="earth";
+      pal,palname;
  }
 
 
@@ -790,7 +795,7 @@ func xyt (xtitle, ytitle,adjust=,color=,height=,font=)
 
 
 
-func outpng (ofile,view=)
+func outpng (ofile,view=,t=)
 /* DOCUMENT outpng, ofile
    DEFINITION outpng (ofile,view=)
    saves plottings in png format.
@@ -807,26 +812,32 @@ func outpng (ofile,view=)
  */
 {
   require,"png.i";
-
+  
   if(is_void(view))view=1;
 
   if(is_void(ofile)){
     cwd=get_cwd();
     cd,Y_DIR+"buf";
-    png2,"png_buf"+".png";
+    bufname="png_buf.png";
+    if(!is_void(t)){
+      bufname=swrite(format="frame%d%d%d%d%d.png",t%100000/10000,t%10000/1000,t%1000/100,t%100/10,t%10);
+      view=0;
+    }
+    png2,bufname;
     cd,cwd;
-    ofile=Y_DIR+"buf/png_buf";
-    if(view==1)system,viewer_bin+" "+ofile+".png &";    
+    ofile=Y_DIR+"buf/"+bufname;
+    if(view==1)system,viewer_bin+" "+ofile+" &";    
     
   }else{
-    png2,ofile+".png";
-    if(view==1)system,viewer_bin+" "+ofile+".png &";    
+    ofile=ofile+".png";
+    png2,ofile;
+    if(view==1)system,viewer_bin+" "+ofile+" &";    
   }
-  write,"png output:",ofile+".png";
+  write,"png output:",ofile;
   
 }
 
-func hcpng (name,dens,geom,epsi=,outps=,view=,bgcolor=,alpha=)
+func hcpng (name,dens,geom,epsi=,outps=,view=,bgcolor=,alpha=,t=)
 /* DOCUMENT hapng, name
    DEFINITION hcpng (name,dens,geom,epsi=,outps=,view=,bgcolor=,alpha=)
    saves plotting in png and/or eps format.
@@ -850,6 +861,11 @@ func hcpng (name,dens,geom,epsi=,outps=,view=,bgcolor=,alpha=)
     if(is_void(epsi))epsi=1;
     if(name=="")name=Y_DIR+"buf/png_buf";
     if(is_void(name))name=Y_DIR+"buf/png_buf";
+    if(!is_void(t)){
+      name=Y_DIR+"buf/"+swrite(format="frame%d%d%d%d%d",t%100000/10000,t%10000/1000,t%1000/100,t%100/10,t%10);
+      view=0;
+    }
+
     psname=name;
     name=name+".png";
     
@@ -900,10 +916,32 @@ func hcpng (name,dens,geom,epsi=,outps=,view=,bgcolor=,alpha=)
 }
 
 
-func epsi(name){
+func outeps(name,t=){
+  if(name=="")name=Y_DIR+"buf/png_buf";
+  if(is_void(name))name=Y_DIR+"buf/png_buf";
+
+  if(!is_void(t)){
+    name=Y_DIR+"buf/"+swrite(format="frame%d%d%d%d%d",t%100000/10000,t%10000/1000,t%1000/100,t%100/10,t%10);
+    view=0;
+  }
+  
   hcps,name;
   system, swrite(format="ps2epsi %s.ps %s.eps", name,name);
+  system, swrite(format="rm %s.ps", name);
+  write,"eps output:",name+".eps";
+}
 
+func outps(name,t=){
+  if(name=="")name=Y_DIR+"buf/png_buf";
+  if(is_void(name))name=Y_DIR+"buf/png_buf";
+
+  if(!is_void(t)){
+    name=Y_DIR+"buf/"+swrite(format="frame%d%d%d%d%d",t%100000/10000,t%10000/1000,t%1000/100,t%100/10,t%10);
+    view=0;
+  }
+  
+  hcps,name;
+  write,"eps output:",name+".ps";
 }
 
 

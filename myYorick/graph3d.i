@@ -112,7 +112,8 @@ func win3(n,palname=)
  */
   {
       extern viewport_center_x,viewport_center_y;
-      if(is_void(mypal))mypal="sunrise";
+
+      if(is_void(palname))palname="earth";
     cenx = viewport_center_x;
     ceny =viewport_center_y;
 
@@ -136,7 +137,7 @@ func win3(n,palname=)
     get_style,landscape, systems, legends, clegends;
     systems.viewport=[xs,xe,ys,ye];
     set_style, landscape, systems, legends, clegends        
-    pal,palname;
+
     orient3;
     //orient3,0.5,2;
 //light3, ambient=.6,diffuse=.4, specular=.7, sdir=[1,1,1];
@@ -144,6 +145,7 @@ func win3(n,palname=)
     //light3, ambient=.2,diffuse=.2, specular=.5, sdir=[1,1,1],spower=3;
 light3, ambient=.2,diffuse=.8, specular=.9, sdir=[1,1,1],spower=3;
  setz3,7;
+ //    pal,palname;
     return ;
 }
 

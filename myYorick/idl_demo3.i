@@ -54,6 +54,10 @@ func idl_demo3 (T,dp=){
   animate,0;
 }
 
-idl_initial_pause=1;
-win2;
-idl_demo3,50000;
+
+
+win2,500,500;
+idl_init_pause=1;
+
+idl_init=1;
+idl_demo3,100000;

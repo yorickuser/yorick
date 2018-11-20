@@ -28,12 +28,14 @@ y= transpose(x);
     plfc,z,y,x,levs=levs;
     plc,z,y,x,color=red,levs=levs;
     //    cbfc,[-2,2],levs=levs,ticks=1,label=1;
+    xyt,"x","y";
     redraw;
     if(idl(dp,fun1=function1,fun2=function2))break;
   }
   animate,0;
 }
 
-idl_initial_pause=1;
+
 win2;
+idl_init=1;
 idl_demo1,10;

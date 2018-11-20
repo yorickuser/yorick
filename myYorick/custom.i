@@ -60,7 +60,8 @@ include, Y_DIR+"graph2d.i";
 include, Y_DIR+"graph3d.i";
 include, Y_DIR+"idl.i";
 include, Y_DIR+"tube3.i";
-
+include, Y_DIR+"lcontour3.i";
+include, Y_DIR+"pale.i";
 
 
 /* This should be the final line in your custom.i file-- it implements
