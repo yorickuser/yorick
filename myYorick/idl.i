@@ -864,9 +864,10 @@ SEE ALSO: mouse, pause
     //write,idl_rotation;
   }
 
-  //rot3,idl_rotation_speed(1),idl_rotation_speed(2);
+  if(rot==1){
           if(idl_rotation==1)rot3,idl_rotation_speed(1),idl_rotation_speed(2);
       if(idl_rotation==2)rot3_ho,idl_rotation_speed(1),idl_rotation_speed(2),idl_rotation_speed(3);
+  }
       
       if(idl_movie){
       if(idl_count%idl_movie_interval==0){
@@ -928,12 +929,12 @@ SEE ALSO: mouse, pause
        write,"stop",bu,act;
 
        
-       if((act=="rotation_stop")+(act=="rotation_start")){
-         flag_stop=0;            
-         if(!flag_animate_off)animate,1;
-         write,"Start";
+         if((act=="rotation_stop")+(act=="rotation_start")){
+           flag_stop=0;            
+           if(!flag_animate_off)animate,1;
+           write,"Start";
        }      
-
+       
        
        if(do_action(act,x,li,rot=rot,rot_hist=rot_hist))return 1;
      
