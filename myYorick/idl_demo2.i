@@ -21,7 +21,6 @@ func idl_demo2(void){
     pl3surf,nv,xyzv;
     lim3,3,3,6;
     draw3,1;
-    rot=1;
     if(idl(20,t,rot=1))break;
   }
   animate,0;
