@@ -180,7 +180,7 @@ func idl_do_action(act,x,li,rot=,rot_hist=){
          if(act=="rotation_stop"){if(rot_hist==0)idl_rotation=0;}
          if(act=="rotation_start"){idl_rotation=idl_set_rotation(x,li,ro_amp);}
          
-         if(act=="rotation_once"){idl_rot3,x,li;}
+         if(act=="rotation_once"){idl_rot3,x,li;draw3,1;}
      }
 
      if(act=="other"){
