@@ -7,6 +7,7 @@ Modification in this fork
 * Directory "myYorick" have been added. "myYorick" contains some additional functions for 2D- and 3D-plot and for event-driven control by mouse (function "idl").
 * Currently, documents for "help, function_name" may be incomplete and source codes are not tidy, but all functions listed below have examples, shown by "help, function_name" at yorick prompt.
 * Functions for 3D-cones and for smooth shading will be added (not yet).
+* For examples of the evnt-driven control function, see [my yorick website](https://translate.google.co.jp/translate?sl=ja&tl=en&js=y&prev=_t&hl=ja&ie=UTF-8&u=http%3A%2F%2Fbeetle.starfree.jp%2Fyorick%2Fyorick_basic_idl.html&edit-text=&act=url) (translated from japanese to english by google translation)
 
 Usage
 -------
