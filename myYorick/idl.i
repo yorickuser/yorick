@@ -13,14 +13,15 @@ idl: idling function for event driven programing controlled by mouse click.
 require, Y_DIR+"graph2d.i";
 require, Y_DIR+"graph3d.i";
 
-flag_animate_off=0;
+idl_flag_animate_off=0;
+idl_movie_eps=0;
 
 idl_default_button="BOTH";
 //idl_default_button="RIGHT";
 //idl_default_button="LEFT";
 
 idl_flag_end=0;
-flag_stop=0;
+idl_flag_stop=0;
 
 idl_init=1;
 idl_init_pause=1;
@@ -32,17 +33,13 @@ idl_old_lim=[0,1,0,1,15];
 idl_old_pos=0;
 idl_count=0;
 idl_count_movie=0;
-idl_movie_eps=0;
+
 idl_movie_size=720;
 idl_movie=0;
 //idl_movie_interval=10;
 idl_movie_interval=2;
 
-idl_but_labs_n=9;
-idl_but_labs_pvx=3.0;
-idl_but_labs_pvy=array(0.0,idl_but_labs_n+1);
-idl_but_labs=array("",idl_but_labs_n);
-idl_but_hide=0;
+
 
 
 idl_curm_past=0;
@@ -74,6 +71,13 @@ idl_map_menu=[["pause","end"],//1
               ["switch_movie","make_movie"],//2
               ["switch_but_hide","switch_but_hide"]];//9
 
+idl_but_labs_n=numberof(idl_map_menu(1,));
+idl_but_labs_pvx=3.0;
+idl_but_labs_pvy=array(0.0,idl_but_labs_n+1);
+idl_but_labs=array("",idl_but_labs_n);
+idl_button_hide=0;
+
+
 idl_win_style="win2";
 
 idl_offset_y_win2=[0.0538032,0.0807049,0.0538032+0.0672541];//400
@@ -92,26 +96,26 @@ idl_offset_y_win3=idl_offset_y_win2+[-0.0124161,-0.0186242,-0.0279363];
 idl_offset_y=idl_offset_y_win2;
 
 
-func do_action_menu(LR,but_id){
-  extern flag_stop,idl_but_hide,idl_default_button,idl_map_menu;
+func idl_do_action_menu(LR,but_id){
+  extern idl_flag_stop,idl_button_hide,idl_default_button,idl_map_menu;
 
   
   flag=0;
   aname=idl_map_menu(LR,but_id);
   
   
-     if(aname=="pause")flag_stop=(flag_stop+1)%2;
+     if(aname=="pause")idl_flag_stop=(idl_flag_stop+1)%2;
       if(aname=="end"){write,"End";flag=1;}
 
-      if(aname=="switch_movie")switch_movie;
-      if(aname=="make_movie")make_movie;
+      if(aname=="switch_movie")idl_switch_movie;
+      if(aname=="make_movie")idl_make_movie;
          
-    if(aname=="change_pal+")change_pal,1;
-     if(aname=="change_pal-")change_pal,-1;
+    if(aname=="change_pal+")idl_change_pal,1;
+     if(aname=="change_pal-")idl_change_pal,-1;
    
     if(aname=="command"){fun3,arg3;} 
-    if(aname=="axis"){switch_ro_axis;}
-    if(aname=="rot_stop"){stop_rotation;}
+    if(aname=="axis"){idl_switch_ro_axis;}
+    if(aname=="rot_stop"){idl_stop_rotation;}
        
     if(aname=="fun1"){"fun1";if(!is_void(fun1))fun1,arg1;}
     if(aname=="fun2"){"fun2";if(!is_void(fun2))fun2,arg2;}
@@ -121,48 +125,48 @@ func do_action_menu(LR,but_id){
     if(aname=="cage"){cage3;}
 
 
-    if(aname=="switch_but_hide"){switch_but_hide;}
+    if(aname=="switch_but_hide"){idl_switch_but_hide;}
 
     return flag;
 }
-func menu_id(menu_name){
+func idl_menu_id(menu_name){
   //menu_name;
   return (where2(idl_map_menu==menu_name))(2,1);
 }
 
-func print_menu(void){
+func idl_print_menu(void){
 
-  if(idl_movie==0)print_but," Movie:off\n /Encode","blue",menu_id("switch_movie"),col0="black";
-  if(idl_movie==1)print_but," Movie:on\n /Encode","red",menu_id("switch_movie"),col0="black";
+  if(idl_movie==0)idl_print_but," Movie:off\n /Encode","blue",idl_menu_id("switch_movie"),col0="black";
+  if(idl_movie==1)idl_print_but," Movie:on\n /Encode","red",idl_menu_id("switch_movie"),col0="black";
 
     
     
-    print_but," Palette: "+swrite(format="%d\n \"%s\"",idl_pal_id,pals(idl_pal_id)),"blue",menu_id("change_pal+"),col0="black";
+    idl_print_but," Palette: "+swrite(format="%d\n \"%s\"",idl_pal_id,pals(idl_pal_id)),"blue",idl_menu_id("change_pal+"),col0="black";
 
-    print_but," Command","blue",menu_id("command"),col0="black";
+    idl_print_but," Command","blue",idl_menu_id("command"),col0="black";
    
    axis_mode=["free","x,y,z"](idl_ro_axis+1);
-   print_but," RoAxis/Stop\n "+axis_mode,"blue",menu_id("axis"),col0="black";
+   idl_print_but," RoAxis/Stop\n "+axis_mode,"blue",idl_menu_id("axis"),col0="black";
   
-   print_but," Fun1/2","blue",menu_id("fun1"),col0="black";
-   print_but," Zoom","blue",menu_id("zoom_in"),col0="black";
-   print_but," Reset/Cage","blue",menu_id("reset"),col0="black";
-   print_but," Hide","blue",menu_id("switch_but_hide"),col0="black";
-   if(!flag_stop)print_but," Pause\n /End","blue",menu_id("pause"),col0="black";
-   if(flag_stop){
-     print_but," Start\n /End","red",menu_id("pause"),col0="red";
+   idl_print_but," Fun1/2","blue",idl_menu_id("fun1"),col0="black";
+   idl_print_but," Zoom","blue",idl_menu_id("zoom_in"),col0="black";
+   idl_print_but," Reset/Cage","blue",idl_menu_id("reset"),col0="black";
+   idl_print_but," Hide","blue",idl_menu_id("switch_but_hide"),col0="black";
+   if(!idl_flag_stop)idl_print_but," Pause\n /End","blue",idl_menu_id("pause"),col0="black";
+   if(idl_flag_stop){
+     idl_print_but," Start\n /End","red",idl_menu_id("pause"),col0="red";
    }
   
 }
   
 
-func do_action(act,x,li,rot=,rot_hist=){
+func idl_do_action(act,x,li,rot=,rot_hist=){
   extern idl_zoom_factor, idl_rotation;
     ro_amp=0.1;
     if(is_void(rot_hist))rot_hist=1;
     flag=0;
     
-  if(act=="switch_but_hide"){switch_but_hide;}
+  if(act=="switch_but_hide"){idl_switch_but_hide;}
   if(act=="limits")limits;
   if(act=="scale")scale,0.9;
   if(act=="zoom_out"){idl_zoom,idl_zoom_factor,x,li;}                   
@@ -190,7 +194,7 @@ func do_action(act,x,li,rot=,rot_hist=){
      
 }
 
-func print_mouse_use(void){
+func idl_print_mouse_use(void){
     write,"Press menu on the right side of window with mouse bottuns.";
     write,"";
     write,"When mouse cursor is on graphics:";
@@ -213,7 +217,7 @@ func print_mouse_use(void){
 
 
 
-func switch_movie(void){
+func idl_switch_movie(void){
   extern idl_movie,idl_count,idl_count_movie;
   idl_movie=(idl_movie+1)%2;
 
@@ -227,15 +231,14 @@ func switch_movie(void){
  
     if(idl_movie_eps)outps,t=idl_count_movie;
     if(!idl_movie_eps)outpng,,t=idl_count_movie;
-    idl_count_movie+=1;
-    idl_count+=1;
+   
  
   }
   if(!idl_movie)write,"Movie off";
   
 }
 
-func make_movie(void){
+func idl_make_movie(void){
    "encoding...";
    extern idl_movie_eps;
    if(idl_movie_eps==0)system,"ffmpeg -y -r 22 -i "+Y_DIR+"buf/frame%05d.png -b:v 1000000  -vcodec libx264 -qscale 0 "+"test.mp4";
@@ -257,56 +260,16 @@ func make_movie(void){
     "totem test.mp4";
 }
 
-func get_action(bu,idl_map){
+func idl_get_action(bu,idl_map){
  
   act=idl_map(2,where(idl_map(1,)==bu));
   if(numberof(act)>1)write,bu,"is mapped on",act;
   return act(1);
 }
 
-func push_button(nlim,olim){
-  //  buf=get_sys();
-  //buf_sys=buf(1);
-  //buf_win=buf(2);
-  //set_sys,nwin,isys;
-  //nlim=limits();
-  butt=0;
-  direx=0;
-  direy=0;
-  xs=olim(1);
-  xe=olim(2);
-  ys=olim(3);
-  ye=olim(4);
-  xs1=nlim(1);
-  xe1=nlim(2);
-  ys1=nlim(3);
-  ye1=nlim(4);
-  xpos=0.0;
-  ypos=0.0;
-  zfac=1.0;
-  xpos=0.5*(xs+xe);
-  ypos=0.5*(ys+ye);
-  if(((xe1-xs1)>1.1*(xe-xs))+ (ye1-ys1>1.1*(ye-ys))>0){
-    butt=2;
-    zfac=1.5;
-    xpos=((xs1+xe1)-zfac*(xs+xe))/(2.0*(1-zfac));
-    ypos=((ys1+ye1)-zfac*(ys+ye))/(2.0*(1-zfac));
-  }
-  if (((xe1-xs1)<0.9*(xe-xs)) + (ye1-ys1<0.9*(ye-ys))>0){
-    butt=1;
-    zfac=1.0/1.5; 
-    xpos=((xs1+xe1)-zfac*(xs+xe))/(2.0*(1-zfac));
-    ypos=((ys1+ye1)-zfac*(ys+ye))/(2.0*(1-zfac));
-
-    direx=-1*((nlim(2)+nlim(1))-(olim(2)+olim(1)))/(olim(2)-olim(1));
-    direy=-1*((nlim(4)+nlim(3))-(olim(4)+olim(3)))/(olim(4)-olim(3));
-    //set_sys,buf_win,buf_sys;
-  }
-    return [butt,direx,direy,xpos,ypos];
-}
 
 
-func orig_pos(lim,olim,oldpos){
+func idl_orig_pos(lim,olim,oldpos){
   extern idl_offset_y;
 
   
@@ -374,7 +337,7 @@ func orig_pos(lim,olim,oldpos){
 
 
 
-func axis_rot3_ho(ddx,ddy,&ro_axis,&dro){
+func idl_axis_rot3_ho(ddx,ddy,&ro_axis,&dro){
   local xx,yy,z;
                 xyz=[[-1.,-1.,-1.],[1.,-1.,-1.],[-1.,1.,-1.],[-1.,-1.,1.]];
                 get3_xy, xyz, xx, yy, z, 1;
@@ -415,7 +378,7 @@ func idl_fun3(rot3){
 }
 
 
-func check_menu_push(oldlim=){
+func idl_check_menu_push(oldlim=){
   extern idl_but_labs_n;
   extern idl_curm_past, idl_oldlim_past,idl_flag_oldlim_stay;
   check2=0;
@@ -484,14 +447,14 @@ func check_menu_push(oldlim=){
     return check2;
 }
 
-func switch_but_hide(void){
-  extern idl_but_hide;
-  idl_but_hide=(idl_but_hide+1)%2;
-  but_hide,idl_but_hide;
+func idl_switch_but_hide(void){
+  extern idl_button_hide;
+  idl_button_hide=(idl_button_hide+1)%2;
+  idl_but_hide,idl_button_hide;
 }
 
-func but_hide(on){
-  extern idl_but_hide;
+func idl_but_hide(on){
+  extern idl_button_hide;
   plsys,0;
   blist=plq();
   hlist=where(strgrep("idl_but",blist)(2,)>0);
@@ -500,11 +463,11 @@ func but_hide(on){
 }
 
 
-func print_but_top(lab,col,id,col0=){
+func idl_print_but_top(lab,col,id,col0=){
   extern idl_but_labs,idl_but_labs_n,idl_but_labs_pvx,idl_but_labs_pvy;
 }
 
-func print_but(lab,col,id,col0=){
+func idl_print_but(lab,col,id,col0=){
   extern idl_but_labs,idl_but_labs_n,idl_but_labs_pvx,idl_but_labs_pvy;
 
   pvx=idl_but_labs_pvx;
@@ -548,7 +511,7 @@ func idl_zoom(amp,x,li,offset=){
  
 pals=["mine","earth","heat","sunrise","cr","sun","bb","rr","gg","cool","gray","br","by","blue","koge","wine","te","yb","silver","earth2","gray2","cale","rg2","gr2","bg2","bb_rev","purple"];
 idl_pal_id=0;
-func change_pal(add_id){
+func idl_change_pal(add_id){
   extern idl_pal_id,pals;
   
   idl_pal_id= (idl_pal_id-1+sign(add_id))%(numberof(pals)) +1;
@@ -558,7 +521,7 @@ func change_pal(add_id){
   write,"Palette changed to:",pals((idl_pal_id));
 }
 
-func init_pal(void){
+func idl_init_pal(void){
  extern idl_pal_id,pals;
  local r,g,b;
  palette,r,g,b,query=1;
@@ -568,15 +531,9 @@ func init_pal(void){
 
  
 }
-func set_pal(id){
-  extern idl_pal_id,pals;
-  idl_pal_id=id;
-  pal,pals(idl_pal_id);
 
-  write,"Palette set to:",pals((idl_pal_id));
-}
 
-func switch_ro_axis(void){
+func idl_switch_ro_axis(void){
   extern idl_ro_axis;
   idl_ro_axis=(idl_ro_axis+1)%2;
   if(idl_ro_axis==0){write,"Rotation along axis: OFF";}
@@ -585,7 +542,7 @@ func switch_ro_axis(void){
 
 
    
-   func  get_push_name(x,ddr,edge_ddr){
+func  idl_get_push_name(x,ddr,edge_ddr){
      bu="";
      if(x(10)==1)bu="1_";
      if(x(10)==2)bu="2_";
@@ -598,7 +555,7 @@ func switch_ro_axis(void){
    }
 
 
-func stop_rotation(void){
+func idl_stop_rotation(void){
   extern idl_rotation_speed, idl_rotation;
   idl_rotation=0;
   idl_rotation_speed*=0;
@@ -617,7 +574,7 @@ func idl_set_rotation(x,li,ro_amp){
   }
   if(idl_ro_axis==1){
     rotation=2;            
-    axis_rot3_ho,ddx,ddy,ro_axis,dro;
+    idl_axis_rot3_ho,ddx,ddy,ro_axis,dro;
     
     idl_rotation_speed*=0.0;
     idl_rotation_speed(ro_axis)=dro*ro_amp;
@@ -649,7 +606,7 @@ func idl_rot3(x,li){
   }else{
     
     
-    axis_rot3_ho,ddx,ddy,ro_axis,dro;
+    idl_axis_rot3_ho,ddx,ddy,ro_axis,dro;
     
     if(ro_axis==3)rot3_ho,,,dro;
     if(ro_axis==1)rot3_ho,dro,,;
@@ -716,7 +673,7 @@ SEE ALSO: mouse, pause
 
 */
 {
-  extern idl_fun3,idl_init,idl_win_style,flag_stop,idl_count,idl_count_movie;
+  extern idl_fun3,idl_init,idl_win_style,idl_flag_stop,idl_count,idl_count_movie;
   //extern idl_rotation, idl_rotation_speed,idl_ro_axis
     extern idl_old_lim,idl_old_pos;
   extern idl_init_pause, idl_but_labs,idl_but_labs_n,idl_but_labs_pvx,idl_but_labs_pvy,idl_default_button, idl_zoom_factor;
@@ -741,17 +698,17 @@ SEE ALSO: mouse, pause
   }
   
   change_lim=0;
-  flag_stop=0;
+  idl_flag_stop=0;
 
    pv=viewport();
     //plsys,0;
    idl_but_labs_pvx=pv(2);
    idl_but_labs_pvy=span(pv(4),pv(3),(idl_but_labs_n+1));
 
-   print_menu;
+   idl_print_menu;
 
      
-     if(idl_but_hide)but_hide,1;
+     if(idl_button_hide)idl_but_hide,1;
 
      
 
@@ -759,26 +716,26 @@ SEE ALSO: mouse, pause
     
        idl_movie=0;
        idl_count=1;
-       init_pal;
+       idl_init_pal;
        idl_old_lim=limits();
 
-       idl_but_hide=0;
+       idl_button_hide=0;
        idl_curm_past=current_mouse();
        idl_oldlim_past=idl_old_lim;
        idl_flag_oldlim_stay=0;
 
-       print_mouse_use;
+       idl_print_mouse_use;
 
     
 
       
-     if(idl_init_pause==1)flag_stop=1;   
+     if(idl_init_pause==1)idl_flag_stop=1;   
 
      get_style,landscape, systems, legends, clegends;
 
      aaa=systems.viewport(,1);
      idl_offset_y=idl_offset_unit/(aaa(4)-aaa(3));
-
+     if(idl_flag_animate_off==1)idl_offset_y*=0;
      
      idl_init=0;
      //   write,idl_init_pause;
@@ -795,7 +752,7 @@ SEE ALSO: mouse, pause
   //if(idl_but_rotation_mode==1)check1=((newlim(2)-newlim(1))>1.2*(oldlim(2)-oldlim(1)));
 
   
-  check2=check_menu_push(oldlim=oldlim);
+  check2=idl_check_menu_push(oldlim=oldlim);
 
   push_R=((newlim(4)-newlim(3))>1.2*(oldlim(4)-oldlim(3)));
   push_L=((newlim(4)-newlim(3))<(1.0/1.2)*(oldlim(4)-oldlim(3)));
@@ -806,7 +763,7 @@ SEE ALSO: mouse, pause
       if(push_L)LR=1;
       if(push_R)LR=2;
       limits,oldlim;
-      if(do_action_menu(LR,check2)){return 1;}
+      if(idl_do_action_menu(LR,check2)){return 1;}
     
     
     
@@ -815,7 +772,7 @@ SEE ALSO: mouse, pause
   
     if(check1){
       limits,oldlim;
-      flag_stop=1;
+      idl_flag_stop=1;
 
       check2;  
     }
@@ -824,7 +781,7 @@ SEE ALSO: mouse, pause
 
 
     
-  if(flag_stop){
+  if(idl_flag_stop){
     limits,oldlim;
     if((!is_void(count)))write,"Stop:",count;
     else write,"Stop";   
@@ -841,22 +798,22 @@ SEE ALSO: mouse, pause
       
       limits,oldlim;
       
-      x=orig_pos(newlim,oldlim,idl_old_pos);
+      x=idl_orig_pos(newlim,oldlim,idl_old_pos);
       li=oldlim;
       ddy=((x(4)-x(2))/(li(4)-li(3)));
       ddx=((x(3)-x(1))/(li(2)-li(1)));
       ddr=sqrt(ddx^2+ddy^2);
       
-      bu=get_push_name(x,ddr,edge_ddr);
+      bu=idl_get_push_name(x,ddr,edge_ddr);
       ///write,(newlim(2)-newlim(1))/(oldlim(2)-oldlim(1));
       
       
-      act=get_action(bu,idl_map);
+      act=idl_get_action(bu,idl_map);
       
       
       //write,"animetion",ddx,ddy,bu,act;    
 
-      if(do_action(act,x,li,rot=rot,rot_hist=rot_hist))return 1;
+      if(idl_do_action(act,x,li,rot=rot,rot_hist=rot_hist))return 1;
      
   
           
@@ -869,24 +826,15 @@ SEE ALSO: mouse, pause
       if(idl_rotation==2)rot3_ho,idl_rotation_speed(1),idl_rotation_speed(2),idl_rotation_speed(3);
   }
       
-      if(idl_movie){
-      if(idl_count%idl_movie_interval==0){
-        
-        if(idl_movie_eps)outps,t=idl_count_movie;
-        if(!idl_movie_eps)outpng,,t=idl_count_movie;
-        idl_count_movie+=1;
-      }
-      }
-      idl_count+=1;
  
-      while(flag_stop==1){
+      while(idl_flag_stop==1){
         
         redraw;
         pause,10;
         
    
-        print_menu;
-        if(idl_but_hide)but_hide,1;
+        idl_print_menu;
+        if(idl_button_hide)idl_but_hide,1;
         
         redraw;
         li=limits();
@@ -899,9 +847,9 @@ SEE ALSO: mouse, pause
    ddx=((x(3)-x(1))/(li(2)-li(1)));
    ddr=sqrt(ddx^2+ddy^2);
 
-   bu=get_push_name(x,ddr,edge_ddr);
+   bu=idl_get_push_name(x,ddr,edge_ddr);
    
-   button_id=check_menu_push(oldlim=idl_old_lim);
+   button_id=idl_check_menu_push(oldlim=idl_old_lim);
      push_but_R=button_id*((bu=="3_click")+(bu=="3_drag"));
      push_but_L=button_id*((bu=="1_click")+(bu=="1_drag"));
      LR=0;
@@ -910,11 +858,11 @@ SEE ALSO: mouse, pause
     
      if((push_but_R+push_but_L)>0){
               
-       if(do_action_menu(LR,button_id))return 1;
+       if(idl_do_action_menu(LR,button_id))return 1;
        
-       if(flag_stop==0){
+       if(idl_flag_stop==0){
          //write,"Start";
-         if(!flag_animate_off)animate,1;
+         if(!idl_flag_animate_off)animate,1;
          write,"Start";
          
        }
@@ -925,18 +873,18 @@ SEE ALSO: mouse, pause
      if(push_but_L + push_but_R ==0){
 
 
-       act=get_action(bu,idl_map);
+       act=idl_get_action(bu,idl_map);
        write,"stop",bu,act;
 
        
          if((act=="rotation_stop")+(act=="rotation_start")){
-           flag_stop=0;            
-           if(!flag_animate_off)animate,1;
+           idl_flag_stop=0;            
+           if(!idl_flag_animate_off)animate,1;
            write,"Start";
        }      
        
        
-       if(do_action(act,x,li,rot=rot,rot_hist=rot_hist))return 1;
+       if(idl_do_action(act,x,li,rot=rot,rot_hist=rot_hist))return 1;
      
      }
       
@@ -949,6 +897,15 @@ SEE ALSO: mouse, pause
   idl_old_pos=current_mouse();
   idl_old_lim=limits();
  
+  if(idl_movie){
+    if((idl_count!=0)*(idl_count%idl_movie_interval==0)){
+      
+      if(idl_movie_eps)outps,t=idl_count_movie;
+      if(!idl_movie_eps)outpng,,t=idl_count_movie;
+      idl_count_movie+=1;
+    }
+  }
+  idl_count+=1;
     
   
 
@@ -986,7 +943,7 @@ ro;
   idl_ro_axis=0;
   idl_init=1;
   // t=0;
-  if(!flag_animate_off)animate,1;
+  if(!idl_flag_animate_off)animate,1;
   while(1){
     //       current_mouse(0);
     //focused_window();
