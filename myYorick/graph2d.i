@@ -178,7 +178,7 @@ if(axis==-2){window,n,style=Y_DIR+"gs/my_box_no_labels.gs",width=int(width),heig
         if(axis==4){window,n,style=Y_DIR+"gs/my_box2c.gs",width=int(width),height=int(height);}
         if(axis==5){window,n,style=Y_DIR+"gs/my_boxe.gs",width=int(width),height=int(height);}
         if(axis==6){window,n,style=Y_DIR+"gs/my_test_divide.gs",width=int(width),height=int(height);}
-        if(axis==7){window,n,style=Y_DIR+"gs/my_test_divide4.gs",width=int(width),height=int(height),dpi=dpi;}
+        if(axis==7){window,n,style=Y_DIR+"gs/my_test_divide4_noticks.gs",width=int(width),height=int(height),dpi=dpi;}
         
         if(axis==1){window,n,style=Y_DIR+"gs/my_box.gs",width=int(width),height=int(height),dpi=dpi;}
     }
